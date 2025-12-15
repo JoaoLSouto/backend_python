@@ -31,10 +31,27 @@ def excluir_registro(conexao, cursor, id):
 def inserir_muitos(conexao, cursor, dados):
     cursor.executemany('INSERT INTO clientes (nome, email) VALUES (?,?)', dados)
     conexao.commit()
-dados = [
-    ('Guilherme', 'guilherme@gmail.com'),
-    ('Ana', 'ana@gmail.com'),
-    ('Joao', 'Joao@gmail.com'),
-]
 
-inserir_muitos(conexao, cursor, dados)
+def recuperar_cliente(cursor, id):
+    cursor.execute("SELECT * FROM clientes WHERE id=?", (id,))
+    return cursor.fetchone()
+
+# cliente = recuperar_cliente(cursor, 2)
+# print(cliente)
+
+def listar_clientes(cursor):
+    return cursor.execute('SELECT * FROM CLIENTES;')
+
+clientes = listar_clientes(cursor)
+for cliente in clientes:
+    print(cliente)
+
+
+
+# dados = [
+#     ('Guilherme', 'guilherme@gmail.com'),
+#     ('Ana', 'ana@gmail.com'),
+#     ('Joao', 'Joao@gmail.com'),
+# ]
+
+#inserir_muitos(conexao, cursor, dados)
