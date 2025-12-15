@@ -28,5 +28,13 @@ def excluir_registro(conexao, cursor, id):
     cursor.execute('DELETE FROM clientes WHERE id=?;', data)
     conexao.commit()
 
-excluir_registro(conexao, cursor, 1)
+def inserir_muitos(conexao, cursor, dados):
+    cursor.executemany('INSERT INTO clientes (nome, email) VALUES (?,?)', dados)
+    conexao.commit()
+dados = [
+    ('Guilherme', 'guilherme@gmail.com'),
+    ('Ana', 'ana@gmail.com'),
+    ('Joao', 'Joao@gmail.com'),
+]
 
+inserir_muitos(conexao, cursor, dados)
