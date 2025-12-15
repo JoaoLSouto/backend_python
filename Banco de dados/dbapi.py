@@ -33,6 +33,7 @@ def inserir_muitos(conexao, cursor, dados):
     conexao.commit()
 
 def recuperar_cliente(cursor, id):
+    cursor.row_factory = sqlite3.Row
     cursor.execute("SELECT * FROM clientes WHERE id=?", (id,))
     return cursor.fetchone()
 
@@ -40,14 +41,19 @@ def recuperar_cliente(cursor, id):
 # print(cliente)
 
 def listar_clientes(cursor):
-    return cursor.execute('SELECT * FROM CLIENTES;')
+    return cursor.execute("select * from clientes ORDER BY nome DESC;")
+
 
 clientes = listar_clientes(cursor)
 for cliente in clientes:
     print(cliente)
 
+cliente = recuperar_cliente(cursor, 2)
+print(dict(cliente))
+print(cliente["id"], cliente["nome"], cliente["email"])
 
-
+print(f'seja bem vindo(a) ao sistema {cliente['nome']}')
+      
 # dados = [
 #     ('Guilherme', 'guilherme@gmail.com'),
 #     ('Ana', 'ana@gmail.com'),
