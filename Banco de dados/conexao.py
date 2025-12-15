@@ -18,7 +18,6 @@ def inserir_registro(conexao, cursor, nome, email):
     cursor.execute("INSERT INTO CLIENTES (nome, email) VALUES(?, ?)", data)
     conexao.commit()
 
-
 def atualizar_registro(conexao, cursor, nome, email, id):
     data = (nome, email, id)
     cursor.execute('UPDATE CLIENTES SET nome=?, email=? WHERE id=?;', data)
