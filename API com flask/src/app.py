@@ -1,33 +1,25 @@
-from flask import Flask, url_for
+import os
 
-app = Flask(__name__)
-
-
-@app.route("/helloworld")
-def hello_world():
-    return {"message": "Hello, World!"}
+from flask import Flask
 
 
-@app.route("/bemvindo/<usuario>/<int:idade>")
-def bem_vindo(usuario, idade):
-    return {
-        "Usuário": usuario,
-        "Idade": idade,
-    }
+def create_app(test_config=None):
+    app = Flask(__name__, instance_relative_config=True)
+    app.config.from_mapping(
+        SECRET_KEY="dev",
+        DATABASE=os.path.join(app.instance_path, "diobank.sqlite"),
+    )
 
+    if test_config is None:
+        app.config.from_pyfile("config.py", silent=True)
+    else:
+        # load the test config if passed in
+        app.config.from_mapping(test_config)
 
-@app.route("/projects/")
-def projects():
-    return "The Project Page"
+    # ensure the instance folder exists
+    try:
+        os.makedirs(app.instance_path)
+    except OSError:
+        pass
 
-
-@app.route("/about", methods=["Get", "POST"])
-def about():
-    return "The About Page"
-
-
-with app.test_request_context():
-    print(url_for("hello_world"))
-    print(url_for("projects"))
-    print(url_for("about", next="/"))
-    print(url_for("bem_vindo", usuario="joao", idade=24))
+    return app
