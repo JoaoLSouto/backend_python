@@ -3,7 +3,7 @@ import os
 from datetime import datetime
 from flask import Flask, current_app
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 import click
 import sqlalchemy as sa
 from flask_migrate import Migrate
@@ -19,10 +19,18 @@ migrate = Migrate()
 jwt = JWTManager()
 
 
+class Role(db.Model):
+    id: Mapped[int] = mapped_column(sa.Integer, primary_key=True)
+    name: Mapped[str] = mapped_column(sa.String, nullable=False)
+    user: Mapped[list["User"]] = relationship(back_populates="parents")
+
+
 class User(db.Model):
     id: Mapped[int] = mapped_column(sa.Integer, primary_key=True)
     username: Mapped[str] = mapped_column(sa.String, unique=True)
-    active: Mapped[bool] = mapped_column(sa.Boolean, default=True)
+    role_id: Mapped[int] = mapped_column(sa.ForeignKey("role.id"))
+    role: Mapped["Role"] = relationship(back_populates="user")
+    # active: Mapped[bool] = mapped_column(sa.Boolean, default=True)
 
     def __repr__(self) -> str:
         return f"User(id={self.id!r}, username={self.name!r}, active={self.active!r})"
