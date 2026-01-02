@@ -4,9 +4,9 @@ from datetime import datetime
 from flask import Flask, current_app
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
-from sqlalchemy import Integer, String
 import click
 import sqlalchemy as sa
+from flask_migrate import Migrate
 
 
 class Base(DeclarativeBase):
@@ -14,14 +14,16 @@ class Base(DeclarativeBase):
 
 
 db = SQLAlchemy(model_class=Base)
+migrate = Migrate()
 
 
 class User(db.Model):
     id: Mapped[int] = mapped_column(sa.Integer, primary_key=True)
     username: Mapped[str] = mapped_column(sa.String, unique=True)
+    active: Mapped[bool] = mapped_column(sa.Boolean, default=True)
 
     def __repr__(self) -> str:
-        return f"User(id={self.id!r}, username={self.name!r})"
+        return f"User(id={self.id!r}, username={self.name!r}, active={self.active!r})"
 
 
 class Post(db.Model):
@@ -63,6 +65,7 @@ def create_app(test_config=None):
         pass
     app.cli.add_command(init_db_command)
     db.init_app(app)
+    migrate.init_app(app, db)
 
     from src.controllers import user
 
