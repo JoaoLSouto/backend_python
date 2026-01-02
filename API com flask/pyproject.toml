@@ -6,11 +6,12 @@ authors = [
     {name = "joaolsouto",email = "contato.joaolsouto@gmail.com"}
 ]
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.12,<4"
 dependencies = [
-    "flask",
-    "flask-sqlalchemy",
-    "flask-migrate"
+    "flask (>=3.1.2,<4.0.0)",
+    "flask-sqlalchemy (>=3.0)",
+    "flask-migrate",
+    "flask-jwt-extended"
 ]
 
 
