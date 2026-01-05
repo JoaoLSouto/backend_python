@@ -11,9 +11,16 @@ dependencies = [
     "flask (>=3.1.2,<4.0.0)",
     "flask-sqlalchemy (>=3.0)",
     "flask-migrate",
-    "flask-jwt-extended"
+    "flask-jwt-extended",
+    "pytest"
 ]
-
+[tool.pytest]
+minversion = "9.0"
+addopts = ["-ra", "-q"]
+testpaths = [
+    "tests",
+    "integration",
+]
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
