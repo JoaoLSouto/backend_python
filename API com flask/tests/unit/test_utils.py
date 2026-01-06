@@ -10,8 +10,8 @@ def test_eleva_quarado_sucesso(test_input, expected):
     assert resultado == expected
 
 
-def test_requires_role():
-    mock_user = Mock()
+def test_requires_role(mocker):
+    mock_user = mocker.Mock()
     mock_user.role.name = "normal"
 
     mock_get_jwt_identity = patch("src.utils.get_jwt_identity")
