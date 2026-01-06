@@ -12,7 +12,8 @@ dependencies = [
     "flask-sqlalchemy (>=3.0)",
     "flask-migrate",
     "flask-jwt-extended",
-    "pytest"
+    "pytest",
+    "pytest-mock"
 ]
 [tool.pytest]
 minversion = "9.0"
